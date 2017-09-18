@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CPUSim"
         mc:Ignorable="d"
-        Title="CPU Simulator" Height="350" Width="525">
+        Title="CPU Simulator" Height="415" Width="665">
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
             <Menu Height="25px">
@@ -15,14 +15,53 @@
         <Grid Name="Content">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100px" MinWidth="25px" MaxWidth="500"/>
-                <ColumnDefinition Width="5"/>
                 <ColumnDefinition MinWidth="20px"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="100px" MinWidth="5px"/>
             </Grid.ColumnDefinitions>
 
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid Name="Registers" Grid.Column="0" Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" Name="Registercol"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+
+                    </Grid.RowDefinitions>
+                </Grid>
+            </ScrollViewer>
+
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
-            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch"/>
+            <DockPanel Grid.Column="1" >
+                <StackPanel DockPanel.Dock="Bottom" Background="White">
+                    <Button Name="Step" Height="25" HorizontalAlignment="Left" Click="Step_Click">
+                        Step
+                    </Button>
+                </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="LightGray">
+                    <StackPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                        <Grid Name="RAM" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+
+            <GridSplitter Grid.Column="2" HorizontalAlignment="Stretch"/>
+            <WrapPanel Grid.Column="3">
+                <TextBlock Name="DummyHelp">
+                    Dummy Help Info
+                </TextBlock>
+                <TextBox GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged">
+                    Hi
+                </TextBox>
+            </WrapPanel>
         </Grid>
     </DockPanel>
 </Window>
