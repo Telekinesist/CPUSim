@@ -22,7 +22,7 @@ namespace CPUSim
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer timer = new DispatcherTimer();
+        public DispatcherTimer timer = new DispatcherTimer();
 
         public MainWindow()
         {
@@ -282,24 +282,28 @@ namespace CPUSim
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock tb = (TextBlock)((Button)sender).Content;
+            TextBlock tb = (TextBlock)RunButton.Content;
             if (Sim.isRunning)
             {
                 tb.Text = "Run";
-                Sim.isRunning = !Sim.isRunning;
+                Sim.isRunning = false;
                 timer.Stop();
             }
             else
             {
                 tb.Text = "Pause";
-                Sim.isRunning = !Sim.isRunning;
+                Sim.isRunning = true;
                 timer.Start();
             }
             
         }
         private void CPU_Cycle(object sender, EventArgs e)
         {
-            Sim.Cycle();
+            bool stop = Sim.Cycle();
+            if (stop)
+            {
+                RunButton_Click(sender, new RoutedEventArgs());
+            }
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

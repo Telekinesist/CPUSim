@@ -45,7 +45,7 @@ namespace CPUSim
             PC = (TextBox)((StackPanel)r.Children[16]).Children[1]; //I know this is hacky
         }
 
-        public static void Step()
+        public static bool Step()
         {
             int instr = int.Parse(PC.Text, System.Globalization.NumberStyles.HexNumber);
             char opc = RAM[instr].Text[0];
@@ -145,6 +145,7 @@ namespace CPUSim
                     break;
                 case 'C':   //Cxxx Stops the program
                     //Not implementet
+                    return true;
                     break;
                 case 'D':   //BRXY Jump to instruction in RAM cell XY if register R is larger than register 0
                     sbyte snum1 = sbyte.Parse(reg[0].Text, System.Globalization.NumberStyles.HexNumber);
@@ -161,6 +162,7 @@ namespace CPUSim
                     break;
                 case 'F':    //FxxR Store currently pressed keyboard key as an ASCII character in register R
                     //not implemented
+
                     break;
                 default:
                     MessageBox.Show("Invalid Opcode: " + opc);
@@ -172,14 +174,16 @@ namespace CPUSim
                 instr -= 256;
             }
             PC.Text = (instr + 2).ToString("X");
+            return false;
         }
 
-        public static void Cycle()
+        public static bool Cycle()
         {
             if (isRunning)
             {
-                Step();
-            }   
+                return Step();
+            }
+            return false;
         }
     }
 }

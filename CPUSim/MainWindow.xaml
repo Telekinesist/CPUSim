@@ -42,7 +42,7 @@
                         Step
                     </Button>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Click="RunButton_Click">
+                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Click="RunButton_Click" Name="RunButton">
                             <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
                                 Run
                             </TextBlock>
