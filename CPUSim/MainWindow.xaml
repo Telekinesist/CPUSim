@@ -7,17 +7,17 @@
         mc:Ignorable="d"
         Title="CPU Simulator" Height="415" Width="665">
     <DockPanel>
-        <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
+        <!--<Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
             <Menu Height="25px">
                 <MenuItem Header="Dummy"></MenuItem>
             </Menu>
-        </Border>
+        </Border>-->
         <Grid Name="Content">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100px" MinWidth="25px" MaxWidth="500"/>
                 <ColumnDefinition MinWidth="20px"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="Auto" MinWidth="10px" Name="SideBar"/>
+                <ColumnDefinition Width="100" MinWidth="10px" Name="SideBar"/>
             </Grid.ColumnDefinitions>
 
 
@@ -31,8 +31,6 @@
                     </Grid.RowDefinitions>
                 </Grid>
             </ScrollViewer>
-
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
             <DockPanel Grid.Column="1" >
                 <Grid DockPanel.Dock="Bottom" Background="White" Height="40" x:Name="ButtonBar">
                     <Grid.ColumnDefinitions>
@@ -44,11 +42,19 @@
                         Step
                     </Button>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}">
+                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Click="RunButton_Click">
                             <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
                                 Run
                             </TextBlock>
                         </Button>
+                        <StackPanel Width="50">
+                            <Slider ValueChanged="Slider_ValueChanged" Maximum="1000" Minimum="1" TickFrequency="1">
+                                
+                            </Slider>
+                            <TextBlock Name="Frequency" Text="1Hz">
+                                
+                            </TextBlock>
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Click="HelpButton_Click">
@@ -93,10 +99,21 @@ i two’s complement.
 6 RST Lav addition af indholdet af register S og T og læg
 resultatet i register R. Indhold fortolkes som flydende
 kommatal.
+                        7 RST Lav bit-wise OR af indholdet af register S og T og
+læg resultatet i register R.
+8 RST Lav bit-wise AND af indholdet af register S og T og
+læg resultatet i register R.
+9 RST Lav bit-wise XOR af indholdet af register S og T og
+læg resultatet i register R.
+A RxX Rot´er indholdet af register R cyclisk mod højre X
+skridt.
+B RXY Jump til instruktionen i RAM celle XY hvis indholdet
+i register R er lig indholdet i register 0.
+C xxx Stop programmet.
+D RXY Jump til instruktionen i RAM celle XY hvis indholdet
+i register R er større (>) end indholdet i register
+0. Indhold fortolkes som heltal i two’s complement.
                     </TextBlock>
-                    <TextBox GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged">
-                        Hi
-                    </TextBox>
                 </WrapPanel>
             </ScrollViewer>
         </Grid>

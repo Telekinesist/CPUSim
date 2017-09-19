@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace CPUSim
 {
@@ -21,6 +22,8 @@ namespace CPUSim
     /// </summary>
     public partial class MainWindow : Window
     {
+        DispatcherTimer timer = new DispatcherTimer();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,6 +31,9 @@ namespace CPUSim
             BuildRAM();
             Sim.SetRAM(RAM);
             Sim.Setreg(Registers);
+
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Tick += CPU_Cycle;
         }
 
         public Int16 GetMem(string addr)
@@ -271,6 +277,39 @@ namespace CPUSim
             {
                 tb.Text = "Hide Help";
                 sp.Width = HelpSidePanelWidth;
+            }
+        }
+
+        private void RunButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock tb = (TextBlock)((Button)sender).Content;
+            if (Sim.isRunning)
+            {
+                tb.Text = "Run";
+                Sim.isRunning = !Sim.isRunning;
+                timer.Stop();
+            }
+            else
+            {
+                tb.Text = "Pause";
+                Sim.isRunning = !Sim.isRunning;
+                timer.Start();
+            }
+            
+        }
+        private void CPU_Cycle(object sender, EventArgs e)
+        {
+            Sim.Cycle();
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Slider sl = (Slider)sender;
+            if (Frequency != null)
+            {
+                int val = (int)Math.Round(0.99310918 * Math.Pow(1.00693863, sl.Value));
+                Frequency.Text = val.ToString() + "Hz";
+                timer.Interval = TimeSpan.FromMilliseconds(1000 / val);
             }
         }
     }

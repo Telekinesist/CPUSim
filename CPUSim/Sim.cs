@@ -3,7 +3,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Controls;
 
 namespace CPUSim
@@ -13,6 +13,7 @@ namespace CPUSim
         public static TextBox[] RAM = new TextBox[256];     //This is one of the best ugly workarounds I've come up with
         public static TextBox[] reg = new TextBox[16];
         public static TextBox PC;
+        public static bool isRunning = false;
 
         //These methods makes the variables above references to the TextBox Elements in the window
         //I am genuently sorry about this
@@ -135,30 +136,50 @@ namespace CPUSim
                     num1 = byte.Parse(reg[0].Text, System.Globalization.NumberStyles.HexNumber);
                     num2 = byte.Parse(RAM[instr].Text[1].ToString(), System.Globalization.NumberStyles.HexNumber);
                     num2 = byte.Parse(reg[num2].Text, System.Globalization.NumberStyles.HexNumber);
+                    //MessageBox.Show(num1.ToString() + " "+ num2.ToString() + " " + (num2==num1).ToString());
                     if (num1 == num2)
                     {
-                        temp = RAM[instr + 1].Text;
-                        PC.Text = temp;
+                        to = int.Parse(RAM[instr + 1].Text, System.Globalization.NumberStyles.HexNumber);
+                        PC.Text = (to - 2).ToString("X");
                     }
                     break;
                 case 'C':   //Cxxx Stops the program
                     //Not implementet
                     break;
-                case 'D':   ////BRXY Jump to instruction in RAM cell XY if register R is larger than register 0
+                case 'D':   //BRXY Jump to instruction in RAM cell XY if register R is larger than register 0
                     sbyte snum1 = sbyte.Parse(reg[0].Text, System.Globalization.NumberStyles.HexNumber);
                     num2 = byte.Parse(RAM[instr].Text[1].ToString(), System.Globalization.NumberStyles.HexNumber);
                     sbyte snum2= sbyte.Parse(reg[num2].Text, System.Globalization.NumberStyles.HexNumber);
                     if (snum1 < snum2)
                     {
-                        temp = RAM[instr + 1].Text;
-                        PC.Text = temp;
+                        to = int.Parse(RAM[instr + 1].Text, System.Globalization.NumberStyles.HexNumber);
+                        PC.Text = (to - 2).ToString("X");
                     }
+                    break;
+                case 'E':   //ERXY Set pixel XY to colour in register R
+                    //Not implemented
+                    break;
+                case 'F':    //FxxR Store currently pressed keyboard key as an ASCII character in register R
+                    //not implemented
                     break;
                 default:
                     MessageBox.Show("Invalid Opcode: " + opc);
                     break;
             }
+            instr = int.Parse(PC.Text, System.Globalization.NumberStyles.HexNumber);
+            if (instr > 255-2)
+            {
+                instr -= 256;
+            }
             PC.Text = (instr + 2).ToString("X");
+        }
+
+        public static void Cycle()
+        {
+            if (isRunning)
+            {
+                Step();
+            }   
         }
     }
 }
