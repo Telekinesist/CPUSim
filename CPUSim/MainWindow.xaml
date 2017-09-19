@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="100px" MinWidth="25px" MaxWidth="500"/>
                 <ColumnDefinition MinWidth="20px"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="100px" MinWidth="5px"/>
+                <ColumnDefinition Width="Auto" MinWidth="10px" Name="SideBar"/>
             </Grid.ColumnDefinitions>
 
 
@@ -34,11 +34,36 @@
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
             <DockPanel Grid.Column="1" >
-                <StackPanel DockPanel.Dock="Bottom" Background="White">
-                    <Button Name="Step" Height="25" HorizontalAlignment="Left" Click="Step_Click">
+                <Grid DockPanel.Dock="Bottom" Background="White" Height="40" x:Name="ButtonBar">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="Step" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Grid.Column="0" Click="Step_Click">
                         Step
                     </Button>
-                </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}">
+                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                                Run
+                            </TextBlock>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Click="HelpButton_Click">
+                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                                Hide Help
+                            </TextBlock>
+                        </Button>
+                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}">
+                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                                Hide Program
+                            </TextBlock>
+                        </Button>
+                    </StackPanel>
+                   
+                </Grid>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="LightGray">
                     <StackPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
                         <Grid Name="RAM" HorizontalAlignment="Left">
@@ -54,14 +79,26 @@
             </DockPanel>
 
             <GridSplitter Grid.Column="2" HorizontalAlignment="Stretch"/>
-            <WrapPanel Grid.Column="3">
-                <TextBlock Name="DummyHelp">
-                    Dummy Help Info
-                </TextBlock>
-                <TextBox GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged">
-                    Hi
-                </TextBox>
-            </WrapPanel>
+            
+            <ScrollViewer Grid.Column="3" VerticalScrollBarVisibility="Auto" x:Name="Help" Width="Auto">
+                <WrapPanel Name="HelpSideBar" Width="{Binding ElementName=Help, Path=ActualWidth}">
+                    <TextBlock Name="DummyHelp" TextWrapping="WrapWithOverflow">
+                        1 RXY Kopier indholdet af RAM celle XY til register R.
+2 RXY Læg bitmønstret angivet af XY ind i register R.
+3 RXY Kopier indholdet af register R til RAM celle XY .
+4 xRS Kopier indholdet af register R til register S.
+5 RST Lav addition af indholdet af register S og T og læg
+resultatet i register R. Indhold fortolkes som heltal
+i two’s complement.
+6 RST Lav addition af indholdet af register S og T og læg
+resultatet i register R. Indhold fortolkes som flydende
+kommatal.
+                    </TextBlock>
+                    <TextBox GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged">
+                        Hi
+                    </TextBox>
+                </WrapPanel>
+            </ScrollViewer>
         </Grid>
     </DockPanel>
 </Window>

@@ -253,5 +253,25 @@ namespace CPUSim
             }
             tb.Text = Regex.Replace(tb.Text, "[^0-9|a-f|A-F]", "0").ToUpper(); //Replaces illigal characters with 0, and makes them uppercase for consistency
         }
+
+        double HelpSidePanelWidth = 0;
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button bt = (Button)sender;
+            TextBlock tb = (TextBlock)bt.Content;
+            WrapPanel sp = (WrapPanel)FindName("HelpSideBar");
+            ColumnDefinition gc = (ColumnDefinition)FindName("SideBar");
+            if (tb.Text == "Hide Help")
+            {
+                tb.Text = "Show Help";
+                HelpSidePanelWidth = sp.Width;
+                sp.Width = 0;
+            }
+            else
+            {
+                tb.Text = "Hide Help";
+                sp.Width = HelpSidePanelWidth;
+            }
+        }
     }
 }
