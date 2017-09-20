@@ -34,6 +34,7 @@ namespace CPUSim
             Sim.SetRAM(RAM);
             Sim.Setreg(Registers);
             SetHelp();
+            BuildList();
 
             timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += CPU_Cycle;
@@ -213,6 +214,19 @@ namespace CPUSim
             }
         }
 
+        private void BuildList()
+        {
+            for (int i = 0; i < 255; i+=2)
+            {
+                string temp = i.ToString("X");
+                if (temp.Length == 1)
+                {
+                    temp = "0" + temp;
+                }
+                ListOfAdresses.Text += temp + "\n";
+            }
+        }
+
         private void Step_Click(object sender, RoutedEventArgs e)
         {
             Sim.Step();
@@ -265,23 +279,23 @@ namespace CPUSim
             tb.Text = Regex.Replace(tb.Text, "[^0-9|a-f|A-F]", "0").ToUpper(); //Replaces illigal characters with 0, and makes them uppercase for consistency
         }
 
-        double HelpSidePanelWidth = 0;
+        GridLength HelpSidePanelWidth = new GridLength(0);
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
             Button bt = (Button)sender;
             TextBlock tb = (TextBlock)bt.Content;
             WrapPanel sp = (WrapPanel)FindName("HelpSideBar");
             ColumnDefinition gc = (ColumnDefinition)FindName("SideBar");
-            if (tb.Text == "Hide Help")
+            if (tb.Text == "Hide Sidebar")
             {
-                tb.Text = "Show Help";
-                HelpSidePanelWidth = sp.Width;
-                sp.Width = 0;
+                tb.Text = "Show Sidebar";
+                HelpSidePanelWidth = SideBar.Width;
+                SideBar.Width = new GridLength(0);
             }
             else
             {
-                tb.Text = "Hide Help";
-                sp.Width = HelpSidePanelWidth;
+                tb.Text = "Hide Sidebar";
+                SideBar.Width = HelpSidePanelWidth;
             }
         }
 
@@ -330,5 +344,24 @@ namespace CPUSim
                 Help.Text = reader.ReadToEnd();
             }
         }
+        
+        private void ProgramButton_Click(object sender, RoutedEventArgs e)
+        {
+            int Shown = Grid.GetColumn(SidebarContent);
+            int hid = Grid.GetColumn(Hidden);
+            Grid.SetColumn(SidebarContent, hid);
+            Grid.SetColumn(Hidden, Shown);
+            TextBlock tb = (TextBlock)((Button)sender).Content;
+            if (Shown > hid)
+            {
+                tb.Text = "Text Program";
+            }
+            else
+            {
+                tb.Text = "Help";
+            }
+        }
+
+
     }
 }

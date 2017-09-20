@@ -18,6 +18,8 @@
                 <ColumnDefinition MinWidth="20px"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="100" MinWidth="10px" x:Name="SideBar" />
+                <ColumnDefinition Width="0"/>
+
             </Grid.ColumnDefinitions>
 
 
@@ -35,8 +37,9 @@
                 <Grid DockPanel.Dock="Bottom" Background="White" Height="40" x:Name="ButtonBar">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="50"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
                     <Button Name="Step" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Grid.Column="0" Click="Step_Click">
                         Step
@@ -48,27 +51,31 @@
                             </TextBlock>
                         </Button>
                         <StackPanel Width="50">
-                            <Slider ValueChanged="Slider_ValueChanged" Maximum="1000" Minimum="1" TickFrequency="1">
-                                
-                            </Slider>
-                            <TextBlock Name="Frequency" Text="1Hz">
-                                
-                            </TextBlock>
+                            
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <StackPanel HorizontalAlignment="Stretch" Grid.Column="2">
+                        <Slider ValueChanged="Slider_ValueChanged" Minimum="1" Maximum="1000" TickFrequency="1" Width="Auto">
+
+                        </Slider>
+                        <TextBlock Name="Frequency" Text="1Hz" TextAlignment="Center">
+
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" HorizontalAlignment="Right" Orientation="Horizontal">
+                        
                         <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Click="HelpButton_Click">
                             <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
-                                Hide Help
+                                Hide Sidebar
                             </TextBlock>
                         </Button>
-                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}">
+                        <Button Width="50" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Click="ProgramButton_Click">
                             <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
-                                Hide Program
+                                Help
                             </TextBlock>
                         </Button>
                     </StackPanel>
-                   
+
                 </Grid>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="LightGray">
                     <StackPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
@@ -85,13 +92,23 @@
             </DockPanel>
 
             <GridSplitter Grid.Column="2" HorizontalAlignment="Stretch"/>
-            
-            <ScrollViewer Grid.Column="3" VerticalScrollBarVisibility="Auto">
+
+            <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Auto" Name="SidebarContent">
                 <WrapPanel Name="HelpSideBar" Width="{Binding ElementName=SideBar, Path=Width}" MinWidth="100">
                     <TextBlock Name="Help" TextWrapping="WrapWithOverflow">
                         Filled at startup.
                     </TextBlock>
                 </WrapPanel>
+            </ScrollViewer>
+            <ScrollViewer Name="Hidden" Grid.Column="3" VerticalScrollBarVisibility="Auto">
+                <DockPanel >
+                    <TextBlock Name="ListOfAdresses" DockPanel.Dock="Left" Width="25">
+
+                    </TextBlock>
+                    <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto">
+
+                    </TextBox>
+                </DockPanel>
             </ScrollViewer>
         </Grid>
     </DockPanel>
