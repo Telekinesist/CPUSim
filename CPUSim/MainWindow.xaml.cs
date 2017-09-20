@@ -361,7 +361,7 @@ namespace CPUSim
                 tb.Text = "Help";
             }
         }
-
+        
         private void TextCode_TextChanged(object sender, TextChangedEventArgs e)
         {
             int carind = TextCode.CaretIndex;                                                   //Gets the original cursor position for reference

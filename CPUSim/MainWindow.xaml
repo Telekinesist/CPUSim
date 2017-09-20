@@ -106,7 +106,7 @@
                     <TextBlock Name="ListOfAdresses" DockPanel.Dock="Left" Width="25" TextAlignment="Center" Margin="0,1,0,0">
 
                     </TextBlock>
-                    <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto" TextChanged="TextCode_TextChanged">
+                    <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto" TextChanged="TextCode_TextChanged" AcceptsReturn="True">
 
                     </TextBox>
                 </DockPanel>
