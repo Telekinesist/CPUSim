@@ -12,6 +12,7 @@
                 <MenuItem Header="Dummy"></MenuItem>
             </Menu>
         </Border>-->
+        <TextBlock Name="Debug" DockPanel.Dock="Top"/>
         <Grid Name="Content">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100px" MinWidth="25px" MaxWidth="500"/>

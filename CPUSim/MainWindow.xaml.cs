@@ -379,6 +379,40 @@ namespace CPUSim
                                                                                 //Remove the newline at the end
 
             TextCode.CaretIndex = carind;                                       //Sets the cursor position to the calculated correct position
+            TextProgramToRam();
+        }
+
+        private void TextProgramToRam()
+        {
+            if (TextCode.Text.Length > (256 + 64)*2)
+            {
+                MessageBox.Show("Program does not fit in RAM");
+                return;
+            }
+            string[] TextProgramLines = new string[256+64];
+            if (TextCode.Text.Length < 4)
+            {
+                return;
+            }
+            TextProgramLines[0] = TextCode.Text.Substring(0, 4);
+            for (int i = 5, j = 1; j < (TextCode.Text.Length + 1) / 5; i += 5, j++)
+            {
+                TextProgramLines[j] = TextCode.Text.Substring(i, 4);
+                Debug.Text = TextProgramLines[j];
+            }
+            for (int i = 0; i < TextProgramLines.Length; i++)
+            {
+                if (TextProgramLines[i] == null)
+                {
+                    TextProgramLines[i] = "0000";
+                }
+            }
+            for (int i = 0; i < 256 / 2; i++)
+            {
+                Sim.RAM[i*2].Text = TextProgramLines[i].Substring(0, 2);
+                Sim.RAM[i*2 + 1].Text = TextProgramLines[i].Substring(2, 2);
+                
+            }
         }
     }
 }
