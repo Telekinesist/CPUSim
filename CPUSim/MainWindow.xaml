@@ -102,10 +102,10 @@
             </ScrollViewer>
             <ScrollViewer Name="Hidden" Grid.Column="3" VerticalScrollBarVisibility="Auto">
                 <DockPanel >
-                    <TextBlock Name="ListOfAdresses" DockPanel.Dock="Left" Width="25">
+                    <TextBlock Name="ListOfAdresses" DockPanel.Dock="Left" Width="25" TextAlignment="Center" Margin="0,1,0,0">
 
                     </TextBlock>
-                    <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto">
+                    <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto" TextChanged="TextCode_TextChanged">
 
                     </TextBox>
                 </DockPanel>

@@ -362,6 +362,23 @@ namespace CPUSim
             }
         }
 
+        private void TextCode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int carind = TextCode.CaretIndex;                                                   //Gets the original cursor position for reference
+            int prev = TextCode.Text.Length;                                                    //Gets the original string length for reference
+            TextCode.Text = Regex.Replace(TextCode.Text, "[^0-9|a-f|A-F|\n]", "").ToUpper();    //Remove all dissalowed characters, and set to uppercase
+            carind -= prev - TextCode.Text.Length;                                      //Move the cursor postion back to accomedate changed string
+            prev = TextCode.Text.Length;                                                //Gets the sanitized string lenght for reference
+            TextCode.Text = Regex.Replace(TextCode.Text, "(....)(.)", "$1\n$2");        //For every line with 5 characters, put a newline between 4 and 5
 
+            if (TextCode.Text.Length > prev)                                            
+            {
+                carind++;                                               //Moves cursor position one forward, to accomedate newline cointing as a character
+            }
+            TextCode.Text = Regex.Replace(TextCode.Text, "\n(.)\n", "\n$1");    //For any single character in a line (happens because of above code)
+                                                                                //Remove the newline at the end
+
+            TextCode.CaretIndex = carind;                                       //Sets the cursor position to the calculated correct position
+        }
     }
 }
