@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Reflection;
+using System.IO;
 
 namespace CPUSim
 {
@@ -31,9 +33,12 @@ namespace CPUSim
             BuildRAM();
             Sim.SetRAM(RAM);
             Sim.Setreg(Registers);
+            SetHelp();
 
             timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += CPU_Cycle;
+            
+
         }
 
         public Int16 GetMem(string addr)
@@ -314,6 +319,15 @@ namespace CPUSim
                 int val = (int)Math.Round(0.99310918 * Math.Pow(1.00693863, sl.Value));
                 Frequency.Text = val.ToString() + "Hz";
                 timer.Interval = TimeSpan.FromMilliseconds(1000 / val);
+            }
+        }
+
+        private void SetHelp()
+        {
+            using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("CPUSim.Help.txt"))
+            using (StreamReader reader = new StreamReader(st))
+            {
+                Help.Text = reader.ReadToEnd();
             }
         }
     }

@@ -146,7 +146,6 @@ namespace CPUSim
                 case 'C':   //Cxxx Stops the program
                     //Not implementet
                     return true;
-                    break;
                 case 'D':   //BRXY Jump to instruction in RAM cell XY if register R is larger than register 0
                     sbyte snum1 = sbyte.Parse(reg[0].Text, System.Globalization.NumberStyles.HexNumber);
                     num2 = byte.Parse(RAM[instr].Text[1].ToString(), System.Globalization.NumberStyles.HexNumber);

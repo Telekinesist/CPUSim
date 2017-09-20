@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="100px" MinWidth="25px" MaxWidth="500"/>
                 <ColumnDefinition MinWidth="20px"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="100" MinWidth="10px" Name="SideBar"/>
+                <ColumnDefinition Width="100" MinWidth="10px" x:Name="SideBar" />
             </Grid.ColumnDefinitions>
 
 
@@ -86,33 +86,10 @@
 
             <GridSplitter Grid.Column="2" HorizontalAlignment="Stretch"/>
             
-            <ScrollViewer Grid.Column="3" VerticalScrollBarVisibility="Auto" x:Name="Help" Width="Auto">
-                <WrapPanel Name="HelpSideBar" Width="{Binding ElementName=Help, Path=ActualWidth}">
-                    <TextBlock Name="DummyHelp" TextWrapping="WrapWithOverflow">
-                        1 RXY Kopier indholdet af RAM celle XY til register R.
-2 RXY Læg bitmønstret angivet af XY ind i register R.
-3 RXY Kopier indholdet af register R til RAM celle XY .
-4 xRS Kopier indholdet af register R til register S.
-5 RST Lav addition af indholdet af register S og T og læg
-resultatet i register R. Indhold fortolkes som heltal
-i two’s complement.
-6 RST Lav addition af indholdet af register S og T og læg
-resultatet i register R. Indhold fortolkes som flydende
-kommatal.
-                        7 RST Lav bit-wise OR af indholdet af register S og T og
-læg resultatet i register R.
-8 RST Lav bit-wise AND af indholdet af register S og T og
-læg resultatet i register R.
-9 RST Lav bit-wise XOR af indholdet af register S og T og
-læg resultatet i register R.
-A RxX Rot´er indholdet af register R cyclisk mod højre X
-skridt.
-B RXY Jump til instruktionen i RAM celle XY hvis indholdet
-i register R er lig indholdet i register 0.
-C xxx Stop programmet.
-D RXY Jump til instruktionen i RAM celle XY hvis indholdet
-i register R er større (>) end indholdet i register
-0. Indhold fortolkes som heltal i two’s complement.
+            <ScrollViewer Grid.Column="3" VerticalScrollBarVisibility="Auto">
+                <WrapPanel Name="HelpSideBar" Width="{Binding ElementName=SideBar, Path=Width}" MinWidth="100">
+                    <TextBlock Name="Help" TextWrapping="WrapWithOverflow">
+                        Filled at startup.
                     </TextBlock>
                 </WrapPanel>
             </ScrollViewer>
