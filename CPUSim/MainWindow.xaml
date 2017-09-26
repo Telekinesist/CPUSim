@@ -115,14 +115,21 @@
                     </TextBlock>
                 </Button>-->
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <DockPanel >
-                        <TextBlock Name="ListOfAdresses" DockPanel.Dock="Left" Width="25" TextAlignment="Center" Margin="0,1,0,0" FontFamily="Consolas">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Name="ListOfAdresses" Grid.Column="0" TextAlignment="Center" Margin="0,1,0,0" FontFamily="Consolas">
 
                         </TextBlock>
 
-                        <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto" TextChanged="TextCode_TextChanged" AcceptsReturn="True" FontFamily="Consolas" CharacterCasing="Upper"/>
-
-                    </DockPanel>
+                        <TextBox Name="TextCode" Grid.Column="1" TextChanged="TextCode_TextChanged" AcceptsReturn="True" FontFamily="Consolas" CharacterCasing="Upper"/>
+                        <TextBlock Name="WhatItDo" Grid.Column="2" Width="Auto" FontFamily="Consolas" Margin="4,0,0,0">
+                            
+                        </TextBlock>
+                    </Grid>
                 </ScrollViewer>
             </DockPanel>
         </Grid>

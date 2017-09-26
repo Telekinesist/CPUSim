@@ -421,6 +421,76 @@ namespace CPUSim
             
             TextCode.CaretIndex = carind;                                       //Sets the cursor position to the calculated correct position
             TextProgramToRam();
+            TextCodeToWritten();
+        }
+
+        private void TextCodeToWritten()
+        {
+            string words = "";
+            for (int i = 0; i < TextCode.LineCount; i++)
+            {
+                string line = TextCode.GetLineText(i).Replace("\n", "");
+                if (line.Length < 4)
+                {
+                    line += new string('0', 4 - line.Length);
+                }
+                
+                switch (line[0])
+                {
+                    case '0':
+                        words += "Go to next instruction";
+                        break;
+                    case '1':
+                        words += "Copy content of RAM adress " + line.Substring(2) + " to register " + line[1];
+                        break;
+                    case '2':
+                        words += "Set the content of register " + line[1] + " to " + line.Substring(2);
+                        break;
+                    case '3':
+                        words += "Copy the content of register " + line[1] + " to RAM adress " + line.Substring(2);
+                        break;
+                    case '4':
+                        words += "Copy the content of register " + line[2] + " to register " + line[3];
+                        break;
+                    case '5':
+                        words += "Add registers " + line[2] + " and " + line[3] + " as two's compliment, and store result in register " + line[1];
+                        break;
+                    case '6':
+                        words += "Add registers " + line[2] + " and " + line[3] + " as floating point, and store result in register " + line[1];
+                        break;
+                    case '7':
+                        words += "Perform bitwise OR with registers " + line[2] + " and " + line[3] + ", and store result in register " + line[1];
+                        break;
+                    case '8':
+                        words += "Perform bitwise AND with registers " + line[2] + " and " + line[3] + ", and store result in register " + line[1];
+                        break;
+                    case '9':
+                        words += "Perform bitwise XOR with registers " + line[2] + " and " + line[3] + ", and store result in register " + line[1];
+                        break;
+                    case 'A':
+                        words += "Perform cyclical rotation on register " + line[1] + ", " + line[3] + " time";
+                        if (line[3] != '1')
+                        {
+                            words += 's';
+                        }
+                        break;
+                    case 'B':
+                        words += "Set PC to " + line.Substring(2) + " if register " + line[1] + " is equal to register 0";
+                        break;
+                    case 'C':
+                        words += "Halt the program";
+                        break;
+                    case 'D':
+                        words += "Set PC to " + line.Substring(2) + " if register " + line[1] + " is larger than register 0 in two's compliment";
+                        break;
+                        
+                    default:
+                        words += "Undefined behaviour";
+                        break;
+                }
+                words += "\n";
+            }
+            WhatItDo.Text = words;
         }
 
         private void TextProgramToRam()
