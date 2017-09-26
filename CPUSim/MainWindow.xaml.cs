@@ -405,9 +405,15 @@ namespace CPUSim
         
         private void TextCode_TextChanged(object sender, TextChangedEventArgs e)
         {
+
             int carind = TextCode.CaretIndex;                                                   //Gets the original cursor position for reference
             int prev = TextCode.Text.Length;                                                    //Gets the original string length for reference
             TextCode.Text = Regex.Replace(TextCode.Text, "[^0-9|a-f|A-F|\n]", "").ToUpper();    //Remove all dissalowed characters, and set to uppercase
+            if (TextCode.LineCount > 128)
+            {
+                TextCode.Text = TextCode.Text.Substring(0, TextCode.GetCharacterIndexFromLineIndex(128)-1);
+                carind++;
+            }
             carind -= prev - TextCode.Text.Length;                                      //Move the cursor postion back to accomedate changed string
             prev = TextCode.Text.Length;                                                //Gets the sanitized string lenght for reference
             TextCode.Text = Regex.Replace(TextCode.Text, "(.)(....)", "$2");        //Prevent linelength to be more than 4 characters (excluding newline)
@@ -419,9 +425,9 @@ namespace CPUSim
 
         private void TextProgramToRam()
         {
-            if (TextCode.LineCount > 255)
+            if (TextCode.LineCount > 128)
             {
-                MessageBox.Show("Program does not fit in RAM");
+                //MessageBox.Show("Program does not fit in RAM");
                 return;
             }
 
