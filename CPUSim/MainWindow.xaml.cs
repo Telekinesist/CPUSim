@@ -200,7 +200,7 @@ namespace CPUSim
                             Width = 25,
                             TextAlignment = TextAlignment.Center,
                             Text = "00",
-                            Name = "M" + x.ToString("X") + y.ToString("X"),
+                            Name = "M" + (y - 1).ToString("X") + (x-1).ToString("X"),
                         };
                         tb.TextChanged += new TextChangedEventHandler(TextBox_TextChanged);
                         tb.LostFocus += new RoutedEventHandler(TextBox_LostFocus);
@@ -277,6 +277,47 @@ namespace CPUSim
                 tb.Text = "00";
             }
             tb.Text = Regex.Replace(tb.Text, "[^0-9|a-f|A-F]", "0").ToUpper(); //Replaces illigal characters with 0, and makes them uppercase for consistency
+
+            ExportButton_Click(sender, e);
+            
+            /**Override the textapp field**/
+
+            /*int num = int.Parse(tb.Name.Substring(1), System.Globalization.NumberStyles.HexNumber);
+            int line = (int)(num / 2);
+            
+            if (TextCode.LineCount <= line)
+            {
+                TextCode.Text += new String('\n', line + 1 - TextCode.LineCount);   //Adds the missing number of lines
+            }
+
+            int charind = TextCode.GetCharacterIndexFromLineIndex(line);
+
+            int missing = (4 - TextCode.GetLineLength(line));
+            if (missing > 0)
+            {
+                int linelength = TextCode.GetLineLength(line);
+                string front = TextCode.Text.Substring(0, charind + linelength);
+                string back = "";
+                if (TextCode.Text.Length > charind + linelength + 1)
+                {
+                    back = TextCode.Text.Substring(charind + linelength + 1);
+                }
+                TextCode.Text = front + new String('0', missing) + back;
+            }
+
+            if (num % 2 == 0)
+            {
+                string front = TextCode.Text.Substring(0, charind);
+                string back = TextCode.Text.Substring(charind + 2);
+                TextCode.Text = front + tb.Text + back;
+            }
+            else
+            {
+                string front = TextCode.Text.Substring(0, charind + 2);
+                string back = TextCode.Text.Substring(charind + 4);
+                TextCode.Text = front + tb.Text + back;
+            }*/
+            
         }
 
         GridLength HelpSidePanelWidth = new GridLength(0);
@@ -369,50 +410,63 @@ namespace CPUSim
             TextCode.Text = Regex.Replace(TextCode.Text, "[^0-9|a-f|A-F|\n]", "").ToUpper();    //Remove all dissalowed characters, and set to uppercase
             carind -= prev - TextCode.Text.Length;                                      //Move the cursor postion back to accomedate changed string
             prev = TextCode.Text.Length;                                                //Gets the sanitized string lenght for reference
-            TextCode.Text = Regex.Replace(TextCode.Text, "(....)(.)", "$1\n$2");        //For every line with 5 characters, put a newline between 4 and 5
-
-            if (TextCode.Text.Length > prev)                                            
-            {
-                carind++;                                               //Moves cursor position one forward, to accomedate newline cointing as a character
-            }
-            TextCode.Text = Regex.Replace(TextCode.Text, "\n(.)\n", "\n$1");    //For any single character in a line (happens because of above code)
-                                                                                //Remove the newline at the end
-
+            TextCode.Text = Regex.Replace(TextCode.Text, "(.)(....)", "$2");        //Prevent linelength to be more than 4 characters (excluding newline)
+            
+            
             TextCode.CaretIndex = carind;                                       //Sets the cursor position to the calculated correct position
             TextProgramToRam();
         }
 
         private void TextProgramToRam()
         {
-            if (TextCode.Text.Length > (256 + 64)*2)
+            if (TextCode.LineCount > 255)
             {
                 MessageBox.Show("Program does not fit in RAM");
                 return;
             }
-            string[] TextProgramLines = new string[256+64];
-            if (TextCode.Text.Length < 4)
+
+            
+            for (int l = 0; l < TextCode.LineCount; l++)            //For every line
             {
-                return;
-            }
-            TextProgramLines[0] = TextCode.Text.Substring(0, 4);
-            for (int i = 5, j = 1; j < (TextCode.Text.Length + 1) / 5; i += 5, j++)
-            {
-                TextProgramLines[j] = TextCode.Text.Substring(i, 4);
-                Debug.Text = TextProgramLines[j];
-            }
-            for (int i = 0; i < TextProgramLines.Length; i++)
-            {
-                if (TextProgramLines[i] == null)
+                string temp = "";
+                string line = TextCode.GetLineText(l);              //Get the text of said line
+
+                if (line != "\n")                                   //Skip if line is empty
                 {
-                    TextProgramLines[i] = "0000";
+                    temp = line;
+                    temp = temp.Replace("\n", "");                  //Remove newline
+                    
+                    temp += new string('0', 4 - temp.Length);       //Pad empty space with zeroes
+                    Sim.RAM[l * 2].Text = temp.Substring(0, 2);     //Write to even RAM words
+                    Sim.RAM[l * 2 + 1].Text = temp.Substring(2);    //Write to uneven RAM words
                 }
             }
-            for (int i = 0; i < 256 / 2; i++)
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)   //Ovewrides the text program with program in RAM
+        {
+            string temp = "";
+            for (int i = 0; i < 256; i += 2)
             {
-                Sim.RAM[i*2].Text = TextProgramLines[i].Substring(0, 2);
-                Sim.RAM[i*2 + 1].Text = TextProgramLines[i].Substring(2, 2);
-                
+                if (Sim.RAM[i].Text == "00" && Sim.RAM[i+1].Text == "00")
+                {
+                    temp += "\n";
+                }
+                else
+                {
+                    temp += Sim.RAM[i].Text + Sim.RAM[i + 1].Text + "\n";
+                }
             }
+            TextCode.Text = Regex.Replace(temp, @"\n*\z", "");
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < Sim.reg.Length; i++)
+            {
+                Sim.reg[i].Text = "00";
+            }
+            Sim.PC.Text = "00";
         }
     }
 }

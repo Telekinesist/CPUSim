@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CPUSim"
         mc:Ignorable="d"
-        Title="CPU Simulator" Height="415" Width="665">
+        Title="CPU Simulator" Height="420" Width="670">
     <DockPanel>
         <!--<Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
             <Menu Height="25px">
@@ -23,17 +23,24 @@
 
             </Grid.ColumnDefinitions>
 
+            <DockPanel Grid.Column="0">
+                <Button DockPanel.Dock="Bottom" Margin="0,0,5,0" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}" Name="ResetButton" Click="ResetButton_Click">
+                    <TextBlock>
+                        Reset Registers
+                    </TextBlock>
+                </Button>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid Name="Registers" Grid.Column="0" Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" Name="Registercol"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <Grid Name="Registers" Grid.Column="0" Margin="0,5,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" Name="Registercol"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-
-                    </Grid.RowDefinitions>
-                </Grid>
-            </ScrollViewer>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                </ScrollViewer>
+            </DockPanel>
+           
             <DockPanel Grid.Column="1" >
                 <Grid DockPanel.Dock="Bottom" Background="White" Height="40" x:Name="ButtonBar">
                     <Grid.ColumnDefinitions>
@@ -101,16 +108,23 @@
                     </TextBlock>
                 </WrapPanel>
             </ScrollViewer>
-            <ScrollViewer Name="Hidden" Grid.Column="3" VerticalScrollBarVisibility="Auto">
-                <DockPanel >
-                    <TextBlock Name="ListOfAdresses" DockPanel.Dock="Left" Width="25" TextAlignment="Center" Margin="0,1,0,0">
-
+            <DockPanel Name="Hidden" Grid.Column="3">
+                <!--<Button DockPanel.Dock="Bottom"  x:Name="ExportButton" Click="ExportButton_Click" Height="{Binding ElementName=ButtonBar, Path=ActualHeight}">
+                    <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                    Export to Text
                     </TextBlock>
-                    <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto" TextChanged="TextCode_TextChanged" AcceptsReturn="True">
+                </Button>-->
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <DockPanel >
+                        <TextBlock Name="ListOfAdresses" DockPanel.Dock="Left" Width="25" TextAlignment="Center" Margin="0,1,0,0" FontFamily="Consolas">
 
-                    </TextBox>
-                </DockPanel>
-            </ScrollViewer>
+                        </TextBlock>
+
+                        <TextBox Name="TextCode" DockPanel.Dock="Right" Width="Auto" TextChanged="TextCode_TextChanged" AcceptsReturn="True" FontFamily="Consolas" CharacterCasing="Upper"/>
+
+                    </DockPanel>
+                </ScrollViewer>
+            </DockPanel>
         </Grid>
     </DockPanel>
 </Window>
